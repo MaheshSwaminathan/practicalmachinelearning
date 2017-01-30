@@ -1,28 +1,140 @@
 ---
-title: "index"
+title: "Practical Machine Learning course project"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 ## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+The goal of the project is to create a classification model to identify the weight-training forms as one of five possible categories A through E using some or all of 159 potential feature variables.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+I decided to use a Random Forest model with cross validation based on the [documentation](https://github.com/lgreski/datasciencectacontent/blob/master/markdown/pml-randomForestPerformance.md) provided on the project. 
 
-```{r cars}
-summary(cars)
-```
+Four key steps:
 
-## Including Plots
+1.    Drop the first seven columns that are primarily identifiers
 
-You can also embed plots, for example:
+2.    Clean up data
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+3.    Remove highly correlated features
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+4.    Parallel implementation of Random Forest with 10-fold cross validation.
+
+Clean up data: Drop data columns that contained NAs or "#DIV/0!" errors. Although other approaches are possible, I wanted to first try fitting a Reduced Feature Model based on potential advantages over imputing missing values (please see [Handling Missing Values when Applying Classification Models, Tsechansky and Provost](http://www.jmlr.org/papers/v8/saar-tsechansky07a.html) for a detailed discussion). Since this approach proved successful I did not pursue althernative data cleanup efforts. This approach reduced the feature set by 100 columns.
+
+Remove highly correlated features: Drop four highly correlated (cor > 0.9) features to improve efficiency.
+
+RF with 10-fold CV: Fit a Random Forest with 10-fold cross validation using 75% of the training data set.
+
+RStudio console output:
+----------------------
+
+| [1] "Start: Mon Jan 30 00:46:42 2017"
+| [1] "End: Mon Jan 30 01:01:45 2017"
+
+| Random Forest
+
+| 14718 samples
+|   48 predictor
+|    5 classes: 'A', 'B', 'C', 'D', 'E'
+
+| No pre-processing
+| Resampling: Cross-Validated (10 fold)
+| Summary of sample sizes: 13246, 13247, 13246, 13246, 13247, 13245, ...
+| Resampling results across tuning parameters:
+
+|  mtry  Accuracy   Kappa
+|   2    0.9929343  0.9910613
+|  25    0.9936808  0.9920061
+|  48    0.9887207  0.9857307
+
+Accuracy was used to select the optimal model using  the
+ largest value.
+
+The final value used for the model was mtry = 25.
+  
+    Accuracy  Kappa   Resample
+
+1  0.9904827 0.9879610   Fold02
+
+2  0.9959239 0.9948436   Fold01
+
+3  0.9945652 0.9931247   Fold04
+
+4  0.9972826 0.9965632   Fold03
+
+5  0.9945689 0.9931292   Fold06
+
+6  0.9932019 0.9913993   Fold05
+
+7  0.9925322 0.9905549   Fold08
+
+8  0.9938859 0.9922653   Fold07
+
+9  0.9925221 0.9905397   Fold10
+
+10 0.9918423 0.9896806   Fold09
+
+Cross-Validated (10 fold) Confusion Matrix
+
+(entries are percentual average cell counts across resamples)
+   
+              Reference
+              
+Prediction    A  B  C  D  E
+              
+         A 28.4  0.1  0.0  0.0  0.0
+
+         B  0.0 19.2  0.1  0.0  0.0
+
+         C  0.0  0.0 17.3  0.2  0.0
+
+         D  0.0  0.0  0.0 16.2  0.1
+
+         E  0.0  0.0  0.0  0.0 18.3
+
+Accuracy (average) : 0.9937
+
+Prelim testing accuracy:	0.993067
+
+ProblemID	PredTest
+
+1	B
+
+2	A
+
+3	B
+
+4	A
+
+5	A
+
+6	E
+
+7	D
+
+8	B
+
+9	A
+
+10	A
+
+11	B
+
+12	C
+
+13	B
+
+14	A
+
+15	E
+
+16	E
+
+17	A
+
+18	B
+
+19	B
+
+20	B
+
