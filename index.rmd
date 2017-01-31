@@ -16,15 +16,15 @@ that points to a successful implementation of such a model.
 I follow four key steps:
 
 1.  Drop the first seven columns that are identifiers and do not contain predictive information on weight lifting form.
-2.  Clean up data.
+2.  Clean up inputs.
 3.  Remove highly correlated features.
 4.  Parallel implementation of Random Forest with 10-fold cross validation.
 
-Clean up data: Drop data columns that contained NAs or "#DIV/0!" errors. Although other approaches are possible, I wanted to first try fitting a Reduced Feature Model based on potential advantages over imputing missing values (please see [Handling Missing Values when Applying Classification Models, Tsechansky and Provost](http://www.jmlr.org/papers/v8/saar-tsechansky07a.html) for a detailed discussion). This approach reduces the feature set by 100 columns. Since this approach results in a model with 99+% training accuracy, I did not pursue alternative data cleanup efforts. 
+**Clean up inputs:** Drop data columns that contained NAs or "#DIV/0!" errors. Although other approaches are possible, I wanted to first try fitting a Reduced Feature Model based on potential advantages over imputing missing values (please see [Handling Missing Values when Applying Classification Models, Tsechansky and Provost](http://www.jmlr.org/papers/v8/saar-tsechansky07a.html) for a detailed discussion). This approach reduces the feature set by 100 columns. Since this approach results in a model with 99+% training accuracy, I did not pursue alternative data cleanup efforts. 
 
-Remove highly correlated features: Drop four highly correlated (cor > 0.9) features to improve efficiency. The final training data consists of 48 predictors and 14718 observations.
+**Remove highly correlated features:** Drop four highly correlated (cor > 0.9) features to improve efficiency. The final training data consists of 48 predictors and 14718 observations.
 
-RF with 10-fold CV: Fit a Random Forest with 10-fold cross validation using 75% of the training data set. The selected model has 99.37% accuracy (average across 10 folds). This is the estimated out-of-sample accuracy of the model. 
+**RF with 10-fold CV:** Fit a Random Forest with 10-fold cross validation using 75% of the training data set. The selected model has 99.37% accuracy (average across 10 folds). This is the estimated out-of-sample accuracy of the model. 
 
 Applied to the 25% of observations held back for preliminary out-of-sample testing, the model's actual classification accuracy is 99.31%.
 

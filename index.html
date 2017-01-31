@@ -127,13 +127,13 @@ $(document).ready(function () {
 <p>I follow four key steps:</p>
 <ol style="list-style-type: decimal">
 <li>Drop the first seven columns that are identifiers and do not contain predictive information on weight lifting form.</li>
-<li>Clean up data.</li>
+<li>Clean up inputs.</li>
 <li>Remove highly correlated features.</li>
 <li>Parallel implementation of Random Forest with 10-fold cross validation.</li>
 </ol>
-<p>Clean up data: Drop data columns that contained NAs or “#DIV/0!” errors. Although other approaches are possible, I wanted to first try fitting a Reduced Feature Model based on potential advantages over imputing missing values (please see <a href="http://www.jmlr.org/papers/v8/saar-tsechansky07a.html">Handling Missing Values when Applying Classification Models, Tsechansky and Provost</a> for a detailed discussion). This approach reduces the feature set by 100 columns. Since this approach results in a model with 99+% training accuracy, I did not pursue alternative data cleanup efforts.</p>
-<p>Remove highly correlated features: Drop four highly correlated (cor &gt; 0.9) features to improve efficiency. The final training data consists of 48 predictors and 14718 observations.</p>
-<p>RF with 10-fold CV: Fit a Random Forest with 10-fold cross validation using 75% of the training data set. The selected model has 99.37% accuracy (average across 10 folds). This is the estimated out-of-sample accuracy of the model.</p>
+<p><strong>Clean up inputs:</strong> Drop data columns that contained NAs or “#DIV/0!” errors. Although other approaches are possible, I wanted to first try fitting a Reduced Feature Model based on potential advantages over imputing missing values (please see <a href="http://www.jmlr.org/papers/v8/saar-tsechansky07a.html">Handling Missing Values when Applying Classification Models, Tsechansky and Provost</a> for a detailed discussion). This approach reduces the feature set by 100 columns. Since this approach results in a model with 99+% training accuracy, I did not pursue alternative data cleanup efforts.</p>
+<p><strong>Remove highly correlated features:</strong> Drop four highly correlated (cor &gt; 0.9) features to improve efficiency. The final training data consists of 48 predictors and 14718 observations.</p>
+<p><strong>RF with 10-fold CV:</strong> Fit a Random Forest with 10-fold cross validation using 75% of the training data set. The selected model has 99.37% accuracy (average across 10 folds). This is the estimated out-of-sample accuracy of the model.</p>
 <p>Applied to the 25% of observations held back for preliminary out-of-sample testing, the model’s actual classification accuracy is 99.31%.</p>
 <div id="rstudio-console-output" class="section level3">
 <h3>RStudio console output</h3>
