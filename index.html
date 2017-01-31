@@ -120,87 +120,281 @@ $(document).ready(function () {
 </div>
 
 
-<div id="r-markdown" class="section level2">
-<h2>R Markdown</h2>
-<p>The goal of the project is to create a classification model to identify the weight-training forms as one of five possible categories A through E using some or all of 159 potential feature variables.</p>
-<p>I decided to use a Random Forest model with cross validation based on the <a href="https://github.com/lgreski/datasciencectacontent/blob/master/markdown/pml-randomForestPerformance.md">documentation</a> provided on the project.</p>
-<p>Four key steps:</p>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<p>The goal of the project is to create a classification model to identify the weight-training form in each observation as one of five possible categories A through E using some or all of 159 potential feature variables.</p>
+<p>I use a Random Forest model with cross validation for this project. This is based on project <a href="https://github.com/lgreski/datasciencectacontent/blob/master/markdown/pml-randomForestPerformance.md">documentation</a> that points to a successful implementation of such a model.</p>
+<p>I follow four key steps:</p>
 <ol style="list-style-type: decimal">
-<li><p>Drop the first seven columns that are primarily identifiers</p></li>
-<li><p>Clean up data</p></li>
-<li><p>Remove highly correlated features</p></li>
-<li><p>Parallel implementation of Random Forest with 10-fold cross validation.</p></li>
+<li>Drop the first seven columns that are identifiers and do not contain predictive information on weight lifting form.</li>
+<li>Clean up data.</li>
+<li>Remove highly correlated features.</li>
+<li>Parallel implementation of Random Forest with 10-fold cross validation.</li>
 </ol>
-<p>Clean up data: Drop data columns that contained NAs or “#DIV/0!” errors. Although other approaches are possible, I wanted to first try fitting a Reduced Feature Model based on potential advantages over imputing missing values (please see <a href="http://www.jmlr.org/papers/v8/saar-tsechansky07a.html">Handling Missing Values when Applying Classification Models, Tsechansky and Provost</a> for a detailed discussion). Since this approach proved successful I did not pursue althernative data cleanup efforts. This approach reduced the feature set by 100 columns.</p>
-<p>Remove highly correlated features: Drop four highly correlated (cor &gt; 0.9) features to improve efficiency.</p>
-<p>RF with 10-fold CV: Fit a Random Forest with 10-fold cross validation using 75% of the training data set.</p>
-</div>
-<div id="rstudio-console-output" class="section level2">
-<h2>RStudio console output:</h2>
-<p>[1] “Start: Mon Jan 30 00:46:42 2017”<br />
-[1] “End: Mon Jan 30 01:01:45 2017”</p>
+<p>Clean up data: Drop data columns that contained NAs or “#DIV/0!” errors. Although other approaches are possible, I wanted to first try fitting a Reduced Feature Model based on potential advantages over imputing missing values (please see <a href="http://www.jmlr.org/papers/v8/saar-tsechansky07a.html">Handling Missing Values when Applying Classification Models, Tsechansky and Provost</a> for a detailed discussion). This approach reduces the feature set by 100 columns. Since this approach results in a model with 99+% training accuracy, I did not pursue alternative data cleanup efforts.</p>
+<p>Remove highly correlated features: Drop four highly correlated (cor &gt; 0.9) features to improve efficiency. The final training data consists of 48 predictors and 14718 observations.</p>
+<p>RF with 10-fold CV: Fit a Random Forest with 10-fold cross validation using 75% of the training data set. The selected model has 99.37% accuracy (average across 10 folds). This is the estimated out-of-sample accuracy of the model.</p>
+<p>Applied to the 25% of observations held back for preliminary out-of-sample testing, the model’s actual classification accuracy is 99.31%.</p>
+<div id="rstudio-console-output" class="section level3">
+<h3>RStudio console output</h3>
+<p>[1] “Training start: Mon Jan 30 00:46:42 2017”<br />
+[1] “Training end: Mon Jan 30 01:01:45 2017”</p>
 <p>Random Forest</p>
-<p>14718 samples<br />
-  48 predictor<br />
-   5 classes: ‘A’, ‘B’, ‘C’, ‘D’, ‘E’</p>
+<p>14718 samples 48 predictor 5 classes: ‘A’, ‘B’, ‘C’, ‘D’, ‘E’</p>
 <p>No pre-processing<br />
 Resampling: Cross-Validated (10 fold)<br />
-Summary of sample sizes: 13246, 13247, 13246, 13246, 13247, 13245, …<br />
-Resampling results across tuning parameters:</p>
-<p> mtry Accuracy Kappa<br />
-  2 0.9929343 0.9910613<br />
- 25 0.9936808 0.9920061<br />
- 48 0.9887207 0.9857307</p>
+Summary of sample sizes: 13246, 13247, 13246, 13246, 13247, 13245, …</p>
+<p>Resampling results across tuning parameters:</p>
+<table>
+<thead>
+<tr class="header">
+<th>mtry</th>
+<th>Accuracy</th>
+<th>Kappa</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2</td>
+<td>0.9929343</td>
+<td>0.9910613</td>
+</tr>
+<tr class="even">
+<td>25</td>
+<td>0.9936808</td>
+<td>0.9920061</td>
+</tr>
+<tr class="odd">
+<td>48</td>
+<td>0.9887207</td>
+<td>0.9857307</td>
+</tr>
+</tbody>
+</table>
 <p>Accuracy was used to select the optimal model using the largest value.</p>
 <p>The final value used for the model was mtry = 25.</p>
-<pre><code>Accuracy  Kappa   Resample</code></pre>
-<p>1 0.9904827 0.9879610 Fold02</p>
-<p>2 0.9959239 0.9948436 Fold01</p>
-<p>3 0.9945652 0.9931247 Fold04</p>
-<p>4 0.9972826 0.9965632 Fold03</p>
-<p>5 0.9945689 0.9931292 Fold06</p>
-<p>6 0.9932019 0.9913993 Fold05</p>
-<p>7 0.9925322 0.9905549 Fold08</p>
-<p>8 0.9938859 0.9922653 Fold07</p>
-<p>9 0.9925221 0.9905397 Fold10</p>
-<p>10 0.9918423 0.9896806 Fold09</p>
+<table>
+<thead>
+<tr class="header">
+<th>Num</th>
+<th>Accuracy</th>
+<th>Kappa</th>
+<th>Resample</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>0.9904827</td>
+<td>0.9879610</td>
+<td>Fold02</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>0.9959239</td>
+<td>0.9948436</td>
+<td>Fold01</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>0.9945652</td>
+<td>0.9931247</td>
+<td>Fold04</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>0.9972826</td>
+<td>0.9965632</td>
+<td>Fold03</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>0.9945689</td>
+<td>0.9931292</td>
+<td>Fold06</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>0.9932019</td>
+<td>0.9913993</td>
+<td>Fold05</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>0.9925322</td>
+<td>0.9905549</td>
+<td>Fold08</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>0.9938859</td>
+<td>0.9922653</td>
+<td>Fold07</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>0.9925221</td>
+<td>0.9905397</td>
+<td>Fold10</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>0.9918423</td>
+<td>0.9896806</td>
+<td>Fold09</td>
+</tr>
+</tbody>
+</table>
 <p>Cross-Validated (10 fold) Confusion Matrix</p>
 <p>(entries are percentual average cell counts across resamples)</p>
-<pre><code>          Reference
-          </code></pre>
-<p>Prediction A B C D E</p>
-<pre><code>     A 28.4  0.1  0.0  0.0  0.0
-
-     B  0.0 19.2  0.1  0.0  0.0
-
-     C  0.0  0.0 17.3  0.2  0.0
-
-     D  0.0  0.0  0.0 16.2  0.1
-
-     E  0.0  0.0  0.0  0.0 18.3</code></pre>
-<p>Accuracy (average) : 0.9937</p>
-<p>Prelim testing accuracy: 0.993067</p>
-<p>ProblemID PredTest</p>
-<p>1 B</p>
-<p>2 A</p>
-<p>3 B</p>
-<p>4 A</p>
-<p>5 A</p>
-<p>6 E</p>
-<p>7 D</p>
-<p>8 B</p>
-<p>9 A</p>
-<p>10 A</p>
-<p>11 B</p>
-<p>12 C</p>
-<p>13 B</p>
-<p>14 A</p>
-<p>15 E</p>
-<p>16 E</p>
-<p>17 A</p>
-<p>18 B</p>
-<p>19 B</p>
-<p>20 B</p>
+<pre><code>                                Reference  </code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>Prediction</th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+<th>E</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A</td>
+<td>28.4</td>
+<td>0.1</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td>B</td>
+<td>0.0</td>
+<td>19.2</td>
+<td>0.1</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td>C</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>17.3</td>
+<td>0.2</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td>D</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>16.2</td>
+<td>0.1</td>
+</tr>
+<tr class="odd">
+<td>E</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>18.3</td>
+</tr>
+</tbody>
+</table>
+<p>Accuracy (average) : 0.9937 &lt;= This is the estimated out-of-sample accuracy from the model</p>
+<p>Prelim testing accuracy (for 25% of the provided training data held back): 0.993067</p>
+<table>
+<thead>
+<tr class="header">
+<th>ProblemID</th>
+<th>PredTest</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>B</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>A</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>B</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>A</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>A</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>E</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>D</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>B</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>A</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>A</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>B</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>C</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>B</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>A</td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td>E</td>
+</tr>
+<tr class="even">
+<td>16</td>
+<td>E</td>
+</tr>
+<tr class="odd">
+<td>17</td>
+<td>A</td>
+</tr>
+<tr class="even">
+<td>18</td>
+<td>B</td>
+</tr>
+<tr class="odd">
+<td>19</td>
+<td>B</td>
+</tr>
+<tr class="even">
+<td>20</td>
+<td>B</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
 

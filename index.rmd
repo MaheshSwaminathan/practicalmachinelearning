@@ -3,138 +3,110 @@ title: "Practical Machine Learning course project"
 output: html_document
 ---
 
-## R Markdown
+##Summary
 
-The goal of the project is to create a classification model to identify the weight-training forms as one of five possible categories A through E using some or all of 159 potential feature variables.
+The goal of the project is to create a classification model to
+identify the weight-training form in each observation as one of five possible categories A through E using some or all of 159 potential feature variables.
 
-I decided to use a Random Forest model with cross validation based on the [documentation](https://github.com/lgreski/datasciencectacontent/blob/master/markdown/pml-randomForestPerformance.md) provided on the project. 
+I use a Random Forest model with cross validation for this
+project. This is based on project
+[documentation](https://github.com/lgreski/datasciencectacontent/blob/master/markdown/pml-randomForestPerformance.md)
+that points to a successful implementation of such a model.
 
-Four key steps:
+I follow four key steps:
 
-1.    Drop the first seven columns that are primarily identifiers
+1.  Drop the first seven columns that are identifiers and do not contain predictive information on weight lifting form.
+2.  Clean up data.
+3.  Remove highly correlated features.
+4.  Parallel implementation of Random Forest with 10-fold cross validation.
 
-2.    Clean up data
+Clean up data: Drop data columns that contained NAs or "#DIV/0!" errors. Although other approaches are possible, I wanted to first try fitting a Reduced Feature Model based on potential advantages over imputing missing values (please see [Handling Missing Values when Applying Classification Models, Tsechansky and Provost](http://www.jmlr.org/papers/v8/saar-tsechansky07a.html) for a detailed discussion). This approach reduces the feature set by 100 columns. Since this approach results in a model with 99+% training accuracy, I did not pursue alternative data cleanup efforts. 
 
-3.    Remove highly correlated features
+Remove highly correlated features: Drop four highly correlated (cor > 0.9) features to improve efficiency. The final training data consists of 48 predictors and 14718 observations.
 
-4.    Parallel implementation of Random Forest with 10-fold cross validation.
+RF with 10-fold CV: Fit a Random Forest with 10-fold cross validation using 75% of the training data set. The selected model has 99.37% accuracy (average across 10 folds). This is the estimated out-of-sample accuracy of the model. 
 
-Clean up data: Drop data columns that contained NAs or "#DIV/0!" errors. Although other approaches are possible, I wanted to first try fitting a Reduced Feature Model based on potential advantages over imputing missing values (please see [Handling Missing Values when Applying Classification Models, Tsechansky and Provost](http://www.jmlr.org/papers/v8/saar-tsechansky07a.html) for a detailed discussion). Since this approach proved successful I did not pursue althernative data cleanup efforts. This approach reduced the feature set by 100 columns.
+Applied to the 25% of observations held back for preliminary out-of-sample testing, the model's actual classification accuracy is 99.31%.
 
-Remove highly correlated features: Drop four highly correlated (cor > 0.9) features to improve efficiency.
+###RStudio console output
 
-RF with 10-fold CV: Fit a Random Forest with 10-fold cross validation using 75% of the training data set.
+[1] "Training start: Mon Jan 30 00:46:42 2017"  
+[1] "Training end: Mon Jan 30 01:01:45 2017"  
 
-RStudio console output:
-----------------------
+Random Forest
 
-| [1] "Start: Mon Jan 30 00:46:42 2017"
-| [1] "End: Mon Jan 30 01:01:45 2017"
+14718 samples
+   48 predictor
+    5 classes: 'A', 'B', 'C', 'D', 'E'
 
-| Random Forest
+No pre-processing  
+Resampling: Cross-Validated (10 fold)  
+Summary of sample sizes: 13246, 13247, 13246, 13246, 13247, 13245, ...  
 
-| 14718 samples
-|   48 predictor
-|    5 classes: 'A', 'B', 'C', 'D', 'E'
+Resampling results across tuning parameters:
 
-| No pre-processing
-| Resampling: Cross-Validated (10 fold)
-| Summary of sample sizes: 13246, 13247, 13246, 13246, 13247, 13245, ...
-| Resampling results across tuning parameters:
-
-|  mtry  Accuracy   Kappa
-|   2    0.9929343  0.9910613
-|  25    0.9936808  0.9920061
-|  48    0.9887207  0.9857307
+mtry|Accuracy|Kappa
+----|--------|-----
+2   |0.9929343|0.9910613
+25  |0.9936808|0.9920061
+48  |0.9887207|0.9857307
 
 Accuracy was used to select the optimal model using  the
  largest value.
 
 The final value used for the model was mtry = 25.
-  
-    Accuracy  Kappa   Resample
 
-1  0.9904827 0.9879610   Fold02
-
-2  0.9959239 0.9948436   Fold01
-
-3  0.9945652 0.9931247   Fold04
-
-4  0.9972826 0.9965632   Fold03
-
-5  0.9945689 0.9931292   Fold06
-
-6  0.9932019 0.9913993   Fold05
-
-7  0.9925322 0.9905549   Fold08
-
-8  0.9938859 0.9922653   Fold07
-
-9  0.9925221 0.9905397   Fold10
-
-10 0.9918423 0.9896806   Fold09
+Num|Accuracy|Kappa|Resample  
+---|--------|-----|--------
+1  |0.9904827|0.9879610|Fold02  
+2  |0.9959239|0.9948436|Fold01  
+3  |0.9945652|0.9931247|Fold04  
+4  |0.9972826|0.9965632|Fold03  
+5  |0.9945689|0.9931292|Fold06  
+6  |0.9932019|0.9913993|Fold05  
+7  |0.9925322|0.9905549|Fold08  
+8  |0.9938859|0.9922653|Fold07  
+9  |0.9925221|0.9905397|Fold10  
+10 |0.9918423|0.9896806|Fold09  
 
 Cross-Validated (10 fold) Confusion Matrix
 
 (entries are percentual average cell counts across resamples)
-   
-              Reference
-              
-Prediction    A  B  C  D  E
-              
-         A 28.4  0.1  0.0  0.0  0.0
 
-         B  0.0 19.2  0.1  0.0  0.0
+                                    Reference  
 
-         C  0.0  0.0 17.3  0.2  0.0
+Prediction|A|B|C|D|E
+----------|-|-|-|-|-
+         A|28.4|0.1|0.0|0.0|0.0
+         B|0.0|19.2|0.1|0.0|0.0
+         C|0.0|0.0|17.3|0.2|0.0
+         D|0.0|0.0|0.0|16.2|0.1
+         E|0.0|0.0|0.0|0.0|18.3
 
-         D  0.0  0.0  0.0 16.2  0.1
+Accuracy (average) : 0.9937 <= This is the estimated out-of-sample accuracy from the model
 
-         E  0.0  0.0  0.0  0.0 18.3
+Prelim testing accuracy (for 25% of the provided training data held back):	0.993067
 
-Accuracy (average) : 0.9937
-
-Prelim testing accuracy:	0.993067
-
-ProblemID	PredTest
-
-1	B
-
-2	A
-
-3	B
-
-4	A
-
-5	A
-
-6	E
-
-7	D
-
-8	B
-
-9	A
-
-10	A
-
-11	B
-
-12	C
-
-13	B
-
-14	A
-
-15	E
-
-16	E
-
-17	A
-
-18	B
-
-19	B
-
-20	B
+ProblemID|PredTest
+---------|--------
+1|B
+2|A
+3|B
+4|A
+5|A
+6|E
+7|D
+8|B
+9|A
+10|A
+11|B
+12|C
+13|B
+14|A
+15|E
+16|E
+17|A
+18|B
+19|B
+20|B
 
