@@ -135,265 +135,139 @@ $(document).ready(function () {
 <p><strong>Remove highly correlated features:</strong> Drop four highly correlated (cor &gt; 0.9) features to improve efficiency. The final training data consists of 48 predictors and 14718 observations.</p>
 <p><strong>RF with 10-fold CV:</strong> Fit a Random Forest with 10-fold cross validation using 75% of the training data set. The selected model has 99.37% accuracy (average across 10 folds). This is the estimated out-of-sample accuracy of the model.</p>
 <p>Applied to the 25% of observations held back for preliminary out-of-sample testing, the model’s actual classification accuracy is 99.31%.</p>
-<div id="rstudio-console-output" class="section level3">
-<h3>RStudio console output</h3>
-<p>[1] “Training start: Mon Jan 30 00:46:42 2017”<br />
-[1] “Training end: Mon Jan 30 01:01:45 2017”</p>
-<p>Random Forest</p>
-<p>14718 samples 48 predictor 5 classes: ‘A’, ‘B’, ‘C’, ‘D’, ‘E’</p>
-<p>No pre-processing<br />
-Resampling: Cross-Validated (10 fold)<br />
-Summary of sample sizes: 13246, 13247, 13246, 13246, 13247, 13245, …</p>
-<p>Resampling results across tuning parameters:</p>
-<table>
-<thead>
-<tr class="header">
-<th>mtry</th>
-<th>Accuracy</th>
-<th>Kappa</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>2</td>
-<td>0.9929343</td>
-<td>0.9910613</td>
-</tr>
-<tr class="even">
-<td>25</td>
-<td>0.9936808</td>
-<td>0.9920061</td>
-</tr>
-<tr class="odd">
-<td>48</td>
-<td>0.9887207</td>
-<td>0.9857307</td>
-</tr>
-</tbody>
-</table>
-<p>Accuracy was used to select the optimal model using the largest value.</p>
-<p>The final value used for the model was mtry = 25.</p>
-<table>
-<thead>
-<tr class="header">
-<th>Num</th>
-<th>Accuracy</th>
-<th>Kappa</th>
-<th>Resample</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>0.9904827</td>
-<td>0.9879610</td>
-<td>Fold02</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td>0.9959239</td>
-<td>0.9948436</td>
-<td>Fold01</td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td>0.9945652</td>
-<td>0.9931247</td>
-<td>Fold04</td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td>0.9972826</td>
-<td>0.9965632</td>
-<td>Fold03</td>
-</tr>
-<tr class="odd">
-<td>5</td>
-<td>0.9945689</td>
-<td>0.9931292</td>
-<td>Fold06</td>
-</tr>
-<tr class="even">
-<td>6</td>
-<td>0.9932019</td>
-<td>0.9913993</td>
-<td>Fold05</td>
-</tr>
-<tr class="odd">
-<td>7</td>
-<td>0.9925322</td>
-<td>0.9905549</td>
-<td>Fold08</td>
-</tr>
-<tr class="even">
-<td>8</td>
-<td>0.9938859</td>
-<td>0.9922653</td>
-<td>Fold07</td>
-</tr>
-<tr class="odd">
-<td>9</td>
-<td>0.9925221</td>
-<td>0.9905397</td>
-<td>Fold10</td>
-</tr>
-<tr class="even">
-<td>10</td>
-<td>0.9918423</td>
-<td>0.9896806</td>
-<td>Fold09</td>
-</tr>
-</tbody>
-</table>
-<p>Cross-Validated (10 fold) Confusion Matrix</p>
-<p>(entries are percentual average cell counts across resamples)</p>
-<pre><code>                                Reference  </code></pre>
-<table>
-<thead>
-<tr class="header">
-<th>Prediction</th>
-<th>A</th>
-<th>B</th>
-<th>C</th>
-<th>D</th>
-<th>E</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>A</td>
-<td>28.4</td>
-<td>0.1</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-</tr>
-<tr class="even">
-<td>B</td>
-<td>0.0</td>
-<td>19.2</td>
-<td>0.1</td>
-<td>0.0</td>
-<td>0.0</td>
-</tr>
-<tr class="odd">
-<td>C</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>17.3</td>
-<td>0.2</td>
-<td>0.0</td>
-</tr>
-<tr class="even">
-<td>D</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>16.2</td>
-<td>0.1</td>
-</tr>
-<tr class="odd">
-<td>E</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>18.3</td>
-</tr>
-</tbody>
-</table>
-<p>Accuracy (average) : 0.9937 &lt;= This is the estimated out-of-sample accuracy from the model</p>
-<p>Prelim testing accuracy (for 25% of the provided training data held back): 0.993067</p>
-<table>
-<thead>
-<tr class="header">
-<th>ProblemID</th>
-<th>PredTest</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>B</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td>A</td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td>B</td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td>A</td>
-</tr>
-<tr class="odd">
-<td>5</td>
-<td>A</td>
-</tr>
-<tr class="even">
-<td>6</td>
-<td>E</td>
-</tr>
-<tr class="odd">
-<td>7</td>
-<td>D</td>
-</tr>
-<tr class="even">
-<td>8</td>
-<td>B</td>
-</tr>
-<tr class="odd">
-<td>9</td>
-<td>A</td>
-</tr>
-<tr class="even">
-<td>10</td>
-<td>A</td>
-</tr>
-<tr class="odd">
-<td>11</td>
-<td>B</td>
-</tr>
-<tr class="even">
-<td>12</td>
-<td>C</td>
-</tr>
-<tr class="odd">
-<td>13</td>
-<td>B</td>
-</tr>
-<tr class="even">
-<td>14</td>
-<td>A</td>
-</tr>
-<tr class="odd">
-<td>15</td>
-<td>E</td>
-</tr>
-<tr class="even">
-<td>16</td>
-<td>E</td>
-</tr>
-<tr class="odd">
-<td>17</td>
-<td>A</td>
-</tr>
-<tr class="even">
-<td>18</td>
-<td>B</td>
-</tr>
-<tr class="odd">
-<td>19</td>
-<td>B</td>
-</tr>
-<tr class="even">
-<td>20</td>
-<td>B</td>
-</tr>
-</tbody>
-</table>
+<div id="r-code-and-output" class="section level3">
+<h3>R Code and Output</h3>
+<pre class="r"><code>library(caret)</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## Loading required package: ggplot2</code></pre>
+<pre class="r"><code>library(kernlab)</code></pre>
+<pre><code>## 
+## Attaching package: 'kernlab'</code></pre>
+<pre><code>## The following object is masked from 'package:ggplot2':
+## 
+##     alpha</code></pre>
+<pre class="r"><code>library(randomForest)</code></pre>
+<pre><code>## randomForest 4.6-12</code></pre>
+<pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
+<pre><code>## 
+## Attaching package: 'randomForest'</code></pre>
+<pre><code>## The following object is masked from 'package:ggplot2':
+## 
+##     margin</code></pre>
+<pre class="r"><code>library(parallel)
+library(doParallel)</code></pre>
+<pre><code>## Loading required package: foreach</code></pre>
+<pre><code>## Loading required package: iterators</code></pre>
+<pre class="r"><code>#### Utility functions
+anyError &lt;- function(v) {
+    return(anyNA(v)|any((v==&quot;&quot;)|is.infinite(v)|(v==&quot;#DIV/0!&quot;)))
+}
+
+predAccuracy &lt;- function(a,b) {sum(a==b)/length(a)}
+
+
+set.seed(97385)
+
+training = read.csv(&quot;https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv&quot;)
+testing = read.csv(&quot;https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv&quot;)
+
+### Drop indentifier columns
+training153 = training[,-(1:7)]
+testing153 = testing[,-(1:7)]
+
+### Drop columns with bad data (missing, infinity, division by zero)
+naCols &lt;- apply(training153,2,anyError)
+naVecInd &lt;- which(as.matrix(naCols)[,1],arr.ind=TRUE)
+nonErrTraining &lt;- training153[,-naVecInd]
+print(sprintf(&quot;Dropping %i columns with bad data&quot;, length(naVecInd)))</code></pre>
+<pre><code>## [1] &quot;Dropping 100 columns with bad data&quot;</code></pre>
+<pre class="r"><code>nonErrTesting &lt;- testing153[,-naVecInd]
+
+### Use 75% of the training data for training the model and hold back 25% for   out-of-sample testing partitions
+smallPart &lt;- createDataPartition(nonErrTraining$classe,p=0.75,list=FALSE)
+smallPartTraining &lt;- nonErrTraining[smallPart,]
+### Complement of smallPartTraining, used for preliminary testing
+compSmallPartTraining &lt;- nonErrTraining[-smallPart,]
+
+### Drop highly correlated columns, keep only one (the first)
+corrMatrix &lt;- cor(smallPartTraining[,-53])
+highlyCorrelated &lt;- findCorrelation(corrMatrix)[-1]
+print(sprintf(&quot;Dropping %i columns with highly correlated (abs(cor) &gt; 0.9) data&quot;, length(highlyCorrelated)))</code></pre>
+<pre><code>## [1] &quot;Dropping 4 columns with highly correlated (abs(cor) &gt; 0.9) data&quot;</code></pre>
+<pre class="r"><code>reducedFeaturesTraining &lt;- smallPartTraining[,-highlyCorrelated]
+## Clean up the prelim test and final test predictor columns too
+reducedFeaturesPrelimTesting &lt;- compSmallPartTraining[,-highlyCorrelated]
+reducedFeaturesTesting &lt;- nonErrTesting[,-highlyCorrelated]
+
+
+### Run fitting in parallel threads
+### Parallelization code snippet courtesy https://github.com/lgreski/datasciencectacontent/blob/master/markdown/pml-randomForestPerformance.md
+cluster &lt;- makeCluster(detectCores() - 1) # convention to leave 1 core for OS
+registerDoParallel(cluster)
+fitControl &lt;- trainControl(method = &quot;cv&quot;, number = 10, allowParallel = TRUE)
+print(sprintf(&quot;Training start: %s&quot;, date()))</code></pre>
+<pre><code>## [1] &quot;Training start: Wed Feb 01 21:59:05 2017&quot;</code></pre>
+<pre class="r"><code>fit &lt;- train(classe ~ .,method=&quot;rf&quot;,data=reducedFeaturesTraining,trControl = fitControl)
+print(sprintf(&quot;Training end: %s&quot;, date()))</code></pre>
+<pre><code>## [1] &quot;Training end: Wed Feb 01 22:08:36 2017&quot;</code></pre>
+<pre class="r"><code>stopCluster(cluster)
+registerDoSEQ()
+
+
+print(fit)</code></pre>
+<pre><code>## Random Forest 
+## 
+## 14718 samples
+##    48 predictor
+##     5 classes: 'A', 'B', 'C', 'D', 'E' 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 13246, 13247, 13246, 13246, 13247, 13245, ... 
+## Resampling results across tuning parameters:
+## 
+##   mtry  Accuracy   Kappa    
+##    2    0.9929343  0.9910613
+##   25    0.9936808  0.9920061
+##   48    0.9887207  0.9857307
+## 
+## Accuracy was used to select the optimal model using  the largest value.
+## The final value used for the model was mtry = 25.</code></pre>
+<pre class="r"><code>print(fit$resample)</code></pre>
+<pre><code>##     Accuracy     Kappa Resample
+## 1  0.9904827 0.9879610   Fold02
+## 2  0.9959239 0.9948436   Fold01
+## 3  0.9945652 0.9931247   Fold04
+## 4  0.9972826 0.9965632   Fold03
+## 5  0.9945689 0.9931292   Fold06
+## 6  0.9932019 0.9913993   Fold05
+## 7  0.9925322 0.9905549   Fold08
+## 8  0.9938859 0.9922653   Fold07
+## 9  0.9925221 0.9905397   Fold10
+## 10 0.9918423 0.9896806   Fold09</code></pre>
+<pre class="r"><code>print(confusionMatrix.train(fit))</code></pre>
+<pre><code>## Cross-Validated (10 fold) Confusion Matrix 
+## 
+## (entries are percentual average cell counts across resamples)
+##  
+##           Reference
+## Prediction    A    B    C    D    E
+##          A 28.4  0.1  0.0  0.0  0.0
+##          B  0.0 19.2  0.1  0.0  0.0
+##          C  0.0  0.0 17.3  0.2  0.0
+##          D  0.0  0.0  0.0 16.2  0.1
+##          E  0.0  0.0  0.0  0.0 18.3
+##                             
+##  Accuracy (average) : 0.9937</code></pre>
+<pre class="r"><code>### Out-of-sample testing
+## Prelim test
+predPrelimTest &lt;- predict(fit, newdata=reducedFeaturesPrelimTesting)
+cat(sprintf(&quot;Prelim testing accuracy:\t%f\n&quot;, predAccuracy(predPrelimTest, reducedFeaturesPrelimTesting$classe)))</code></pre>
+<pre><code>## Prelim testing accuracy: 0.993067</code></pre>
+<pre class="r"><code>### Turn-off printing predictions on the actual test data provided
+##predTest &lt;- predict(fit, newdata=reducedFeaturesTesting)
+##cat(sprintf(&quot;ProblemID\tPredTest\n&quot;))
+##cat(sprintf(&quot;%i\t%s&quot;,reducedFeaturesTesting$problem_id, predTest))</code></pre>
 </div>
 </div>
 
