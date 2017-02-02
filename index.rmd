@@ -24,7 +24,7 @@ I follow four key steps:
 
 **Remove highly correlated features:** Drop four highly correlated (cor > 0.9) features to improve efficiency. The final training data consists of 48 predictors and 14718 observations.
 
-**RF with 10-fold CV:** Fit a Random Forest with 10-fold cross validation using 75% of the training data set. The selected model has 99.37% accuracy (average across 10 folds). This is the estimated out-of-sample accuracy of the model.
+**RF with 10-fold CV:** Fit a Random Forest with 10-fold cross validation using 75% of the training data set. The selected model has 99.37% accuracy (average across 10 folds). This is the estimated out-of-sample accuracy of the model.Accordingly, the estimated out-of-sample error is 0.63%.
 
 Applied to the 25% of observations held back for preliminary out-of-sample testing, the model's actual classification accuracy is 99.31%.
 
