@@ -133,7 +133,7 @@ $(document).ready(function () {
 </ol>
 <p><strong>Clean up inputs:</strong> Drop data columns that contained NAs or “#DIV/0!” errors. Although other approaches are possible, I wanted to first try fitting a Reduced Feature Model based on potential advantages over imputing missing values (please see <a href="http://www.jmlr.org/papers/v8/saar-tsechansky07a.html">Handling Missing Values when Applying Classification Models, Tsechansky and Provost</a> for a detailed discussion). This approach reduces the feature set by 100 columns. Since this approach results in a model with 99+% training accuracy, I did not pursue alternative data cleanup efforts.</p>
 <p><strong>Remove highly correlated features:</strong> Drop four highly correlated (cor &gt; 0.9) features to improve efficiency. The final training data consists of 48 predictors and 14718 observations.</p>
-<p><strong>RF with 10-fold CV:</strong> Fit a Random Forest with 10-fold cross validation using 75% of the training data set. The selected model has 99.37% accuracy (average across 10 folds). This is the estimated out-of-sample accuracy of the model.</p>
+<p><strong>RF with 10-fold CV:</strong> Fit a Random Forest with 10-fold cross validation using 75% of the training data set. The selected model has 99.37% accuracy (average across 10 folds). This is the estimated out-of-sample accuracy of the model.Accordingly, the estimated out-of-sample error is 0.63%.</p>
 <p>Applied to the 25% of observations held back for preliminary out-of-sample testing, the model’s actual classification accuracy is 99.31%.</p>
 <div id="r-code-and-output" class="section level3">
 <h3>R Code and Output</h3>
@@ -206,10 +206,10 @@ cluster &lt;- makeCluster(detectCores() - 1) # convention to leave 1 core for OS
 registerDoParallel(cluster)
 fitControl &lt;- trainControl(method = &quot;cv&quot;, number = 10, allowParallel = TRUE)
 print(sprintf(&quot;Training start: %s&quot;, date()))</code></pre>
-<pre><code>## [1] &quot;Training start: Wed Feb 01 21:59:05 2017&quot;</code></pre>
+<pre><code>## [1] &quot;Training start: Thu Feb 02 10:16:27 2017&quot;</code></pre>
 <pre class="r"><code>fit &lt;- train(classe ~ .,method=&quot;rf&quot;,data=reducedFeaturesTraining,trControl = fitControl)
 print(sprintf(&quot;Training end: %s&quot;, date()))</code></pre>
-<pre><code>## [1] &quot;Training end: Wed Feb 01 22:08:36 2017&quot;</code></pre>
+<pre><code>## [1] &quot;Training end: Thu Feb 02 10:31:36 2017&quot;</code></pre>
 <pre class="r"><code>stopCluster(cluster)
 registerDoSEQ()
 
